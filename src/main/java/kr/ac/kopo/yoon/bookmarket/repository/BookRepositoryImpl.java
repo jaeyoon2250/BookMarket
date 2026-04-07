@@ -1,18 +1,19 @@
 package kr.ac.kopo.yoon.bookmarket.repository;
 
 
+import jakarta.servlet.Filter;
 import kr.ac.kopo.yoon.bookmarket.domain.Book;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class BookRepositoryImpl implements BookRepository{
+    private final Filter filter;
     private List<Book> listOfBooks = new ArrayList<Book>();
 
-    public BookRepositoryImpl() {
+    public BookRepositoryImpl(Filter filter) {
         Book book1 = new Book();
         book1.setBookId("isbn1001");
         book1.setName("해저2만리");
@@ -39,7 +40,7 @@ public class BookRepositoryImpl implements BookRepository{
                 "또한 부록을 통해 최신 버전의 오라클뿐만 아니라 설치하지 않아도 사용할 수 있는\n" +
                 "Live SQL을 활용해 데이터베이스를 직접 구축해볼 수 있게 안내하였습니다.\n");
         book2.setPublisher("한빛아카데미");
-        book2.setCategory("컴퓨터/IT");
+        book2.setCategory("컴퓨터_IT");
         book2.setUnitsInStock(5);
         book2.setReleaseDate("2022-01-15");
         book2.setCondition("신규상품");
@@ -52,7 +53,7 @@ public class BookRepositoryImpl implements BookRepository{
         book3.setDescription("이 책은 국가공인 리눅스마스터 2급 자격시험을 대비하기 위한 수험서이다. 최근 5년간 출제 기준을 반영하여 시험에 반드시 나오는 핵심 이론을 총 3개 파트, 12개 챕터, 29개 섹션으로 정리하였다. " +
                 "또한, 다양한 문제를 풀어보며 출제 유형을 익힐 수 있도록 챕터별 900개 이상의 예상문제와 23, 24년 기출문제 4회분, 최신 출제 경향을 분석해 구성한 실전 모의고사 3회분을 수록하였다. 마지막으로 리눅스마스터 2급 학습을 점검하고 빠르게 마무리하기 위한 핵심 이론 요약집과 주요 명령어 별지를 수록하였다.");
         book3.setPublisher("시대고시기획");
-        book3.setCategory("컴퓨터/IT");
+        book3.setCategory("컴퓨터_IT");
         book3.setUnitsInStock(5);
         book3.setReleaseDate("2026-03-10");
         book3.setCondition("신규상품");
@@ -60,10 +61,67 @@ public class BookRepositoryImpl implements BookRepository{
         listOfBooks.add(book1);
         listOfBooks.add(book2);
         listOfBooks.add(book3);
+        this.filter = filter;
     }
 
     @Override
     public List<Book> getAllBookList() {
         return listOfBooks;
+    }
+
+    @Override
+    public Book getBookById(String bookId) {
+        Book book = null;
+        for (Book searchBook: listOfBooks) {
+            if (searchBook != null && searchBook.getBookId() != null && searchBook.getBookId().equals(bookId)) {
+                book = searchBook;
+                break;
+            }
+        }
+
+        if (book == null) {
+            throw new IllegalArgumentException("도서ID가 " + bookId + "인 도서는 찾을 수가 없습니다.");
+        }
+
+        return book;
+    }
+
+    @Override
+    public List<Book> getBookListByCategory(String category) {
+        List<Book> booksByCategory = new ArrayList<>();
+        for (Book searchBook: listOfBooks) {
+            if (category.equalsIgnoreCase(searchBook.getCategory())) {
+                booksByCategory.add(searchBook);
+            }
+        }
+
+        return booksByCategory;
+    }
+
+    @Override
+    public Set<Book> getBookListByFilter(Map<String, List<String>> filter) {
+        Set<Book> booksByCategory = new HashSet<Book>();
+        Set<Book> booksByPublisher = new HashSet<Book>();
+        Set<String> bookByFilter = filter.keySet();
+
+        if (bookByFilter.contains("publisher")) {
+            for (String publisherName : filter.get("publisher")) {
+                for (Book searchBook : listOfBooks) {
+                    if (publisherName.equalsIgnoreCase(searchBook.getPublisher()))
+                        booksByPublisher.add(searchBook);
+                }
+            }
+        }
+
+        if (bookByFilter.contains("category")) {
+            for (String category : filter.get("category")) {
+                List<Book> list = getBookListByCategory(category);
+                booksByCategory.addAll(list);
+            }
+        }
+
+        booksByCategory.retainAll(booksByPublisher);
+
+        return booksByCategory;
     }
 }
