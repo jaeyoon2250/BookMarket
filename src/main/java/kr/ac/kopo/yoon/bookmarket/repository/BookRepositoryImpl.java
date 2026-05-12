@@ -14,7 +14,7 @@ public class BookRepositoryImpl implements BookRepository{
 
     public BookRepositoryImpl() {
         Book book1 = new Book();
-        book1.setBookId("isbn11");
+        book1.setBookId("isbn1001");
         book1.setName("데미안");
         book1.setUnitPrice(new BigDecimal(7200));
         book1.setAuthor("헤르만 헤세");
@@ -23,9 +23,10 @@ public class BookRepositoryImpl implements BookRepository{
         book1.setCategory("문학");
         book1.setUnitsInStock(1000);
         book1.setReleaseDate("2000 / 12 / 20");
+        book1.setFileName("isbn1001.jpg");
 
         Book book2 = new Book();
-        book2.setBookId("isbn22");
+        book2.setBookId("isbn2002");
         book2.setName("코스모스");
         book2.setUnitPrice(new BigDecimal(19800));
         book2.setAuthor("칼 세이건");
@@ -34,9 +35,10 @@ public class BookRepositoryImpl implements BookRepository{
         book2.setCategory("우주과학");
         book2.setUnitsInStock(1000);
         book2.setReleaseDate("2006 / 12 / 20");
+        book2.setFileName("isbn2002.jpg");
 
         Book book3 = new Book();
-        book3.setBookId("isbn33");
+        book3.setBookId("isbn3003");
         book3.setName("논어");
         book3.setUnitPrice(new BigDecimal(10800));
         book3.setAuthor("공자");
@@ -45,6 +47,7 @@ public class BookRepositoryImpl implements BookRepository{
         book3.setCategory("동양철학");
         book3.setUnitsInStock(1000);
         book3.setReleaseDate("2018 / 10 / 01");
+        book3.setFileName("isbn3003.jpg");
 
         listOfBooks.add(book1);
         listOfBooks.add(book2);

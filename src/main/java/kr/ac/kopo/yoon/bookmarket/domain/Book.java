@@ -3,6 +3,7 @@ package kr.ac.kopo.yoon.bookmarket.domain;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
@@ -13,11 +14,13 @@ public class Book {
     private String bookId; //도서 ID
     private String name; //도서 이름
     private BigDecimal unitPrice; //도서 가격
-    private String Author; //저자
+    private String author; //저자
     private String description; //설명
     private String publisher; //출판사
     private String category; //분류
     private long unitsInStock; //재고수
     private String releaseDate; //출판일
-    private String Condition; //신규도서, 중고도서, E-Book
+    private String condition; //신규도서, 중고도서, E-Book
+    private String fileName; //도서이미지 파일이름
+    private MultipartFile bookImage; //도서이미지 파일객체
 }
