@@ -4,6 +4,7 @@ import kr.ac.kopo.yoon.bookmarket.domain.Cart;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @Repository
@@ -37,5 +38,14 @@ public class CartRepositoryImpl implements CartRepository{
         }
 
         listOfCart.put(cartId, cart);
+    }
+
+    @Override
+    public void delete(String cartId) {
+        if (!listOfCart.keySet().contains(cartId)){
+            throw new IllegalArgumentException(String.format("장바구니 id(%s)가 존재하지 않아 장바구니 목록을 삭제할 수 없습니다.", cartId));
+        }
+
+        listOfCart.remove(cartId);
     }
 }

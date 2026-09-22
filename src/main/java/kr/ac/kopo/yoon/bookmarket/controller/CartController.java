@@ -41,7 +41,12 @@ public class CartController {
     @GetMapping("/{cartId}")
     public String requestCartList(@PathVariable(value = "cartId") String cartId, Model model) {
         Cart cart = cartService.read(cartId);
+
+        if (cart == null)
+            cart = cartService.create(new Cart(cartId));
+
         model.addAttribute("cart", cart);
+        model.addAttribute("cartId", cartId);
         return "cart";
     }
 
@@ -88,5 +93,11 @@ public class CartController {
         cart.removeCartItem(new CartItem(book));
 
         cartService.update(sessionId, cart);
+    }
+
+    @DeleteMapping("/{cartId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteCartList(@PathVariable("cartId") String cartId) {
+        cartService.delete(cartId);
     }
 }
