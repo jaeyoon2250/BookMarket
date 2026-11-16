@@ -25,7 +25,7 @@ public class Order {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_order_id")
-    private Map<String, OrderItems> orderItem = new HashMap<String, OrderItems>();
+    private Map<String, OrderItems> orderItems = new HashMap<String, OrderItems>();
 
     private BigDecimal grandTotal;
 }

@@ -54,7 +54,7 @@ public class OrderController {
             orderItem.setQuantity(item.getQuantity());
             orderItem.setTotalPrice(item.getTotalPrice());
 
-            order.getOrderItem().put(book.getBookId(), orderItem);
+            order.getOrderItems().put(book.getBookId(), orderItem);
         }
 
         order.setCustomer(new Customer());
