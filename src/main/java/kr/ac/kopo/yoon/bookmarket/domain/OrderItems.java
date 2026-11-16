@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
-public class OrderItem {
+public class OrderItems {
     @Id
     @GeneratedValue
     private Long id;
